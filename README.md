@@ -2,6 +2,8 @@
 # Aplikasi Server Node JS menggunakan CloudFormation di AWS
 
 
+
+
 ## Setting Cloud Formation di AWS
 
 1. Login ke AWS Amazon Console dan masuk ke Cloudformation
@@ -48,6 +50,30 @@ Resources:
 6. kemudian create stack dan tunggu hingga proses pembuatan ec2 selesai
 
 
+##Konfigurasi firewall
+
+1. start dan enable firewalld
+
+```bash
+   sudo systemctl start firewalld && sudo systemctl enable firewalld
+   ```
+
+2. Open Port 22,80 dan 443
+
+```bash
+   sudo firewall-cmd --zone=public --permanent --add-port=22/tcp
+   sudo firewall-cmd --zone=public --permanent --add-port=80/tcp
+   sudo firewall-cmd --zone=public --permanent --add-port=443/tcp
+   ```
+
+3. reload firewalld untuk memperbaharui konfigurasi firewall
+
+```bash
+    sudo firewall-cmd --reload
+   ```
+
+4. untuk tahap ini port hanya membuka yg diperlukan saja.
+
 ## Install Node JS di EC2
 1. setelah selesai pembuatan EC2 kemudian login ssh menggunakan console
 
@@ -69,5 +95,22 @@ Resources:
    sudo yum install nodejs
    ```
 
-5. 
+5. kemudian install pm2 untuk membuat aplikasi bisa berjalan di belakang layar / background
+
+   ```bash
+   sudo npm i pm2 -g
+   ```
+
+6. selanjutnya install nginx untuk reverse proxy
+
+   ```bash
+   sudo yum install nginx
+   ```
+
+
+## Clone project dari github
+
+```bash
+git clone https://github.com/ekialvino/demo-technical-test.git
+```
 
