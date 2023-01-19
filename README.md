@@ -11,7 +11,6 @@ Untuk langkah pertama pastikan sudah login ke AWS Console. pilih AZ yg diinginka
 3. Isi nama keypair nya contoh : demo-nodejs dan biarkan default settingannya kemudian create key pair untuk di proses
 
 4. secara otomatis key pair akan terdownload yang akan kita gunakan untuk login SSH ke EC2
-## Setting Cloud Formation di AWS
 
 ## Setting Cloud Formation di AWS
 
