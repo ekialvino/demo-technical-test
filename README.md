@@ -250,3 +250,20 @@ Hello World from Node JS
 ```
 
 ## Konfigurasi SSL 
+
+1. Untuk menambahkan SSL diaplikasi node js kita, install certbot-nginx
+
+```
+sudo yum install -y certbot-nginx
+```
+
+2. kemudian tambahkan ssl pada sub domain yg telah dikonfigurasi sebelumnya
+
+```bash
+certbot --nginx -d ec2-54-167-233-28.compute-1.amazonaws.com
+```
+
+3. kemudian masukkan email address dan pilih Y(Yes) untuk menyetujui Term of services
+
+4. tunggu hingga proses selesai. dan aplikasi node js telah terpasang SSL dan otomatis redirect ke port 443
+
