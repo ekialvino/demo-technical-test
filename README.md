@@ -103,8 +103,6 @@ sudo systemctl start firewalld && sudo systemctl enable firewalld
    ```
 
 5. untuk tahap ini port hanya membuka yg diperlukan saja.
-## Install Node JS
-
 ## Install Node JS di EC2
 1. setelah selesai pembuatan EC2 kemudian login ssh menggunakan console
 
@@ -154,4 +152,101 @@ sudo systemctl start nginx && sudo systemctl enable nginx
 
 3. setelah itu pastikan nginx berjalan dengan baik dengan buka browser dan ketikkan ip public EC2 di AWS
 
-4. jika berhasil, kemudian konfigurasi node js
+4. jika berhasil, selanjutnya masuk ke folder /etc/nginx/conf.d
+
+```bash
+cd /etc/nginx/conf.d
+```
+
+5. jika ingin membuat subdomain yg mengarah ke IP Public EC2 ini. silahkan tambahkan A record. untuk contoh ini saya hanya menggunakan subdomain dari AWS
+
+6. buat file bernama test.conf
+
+```bash
+sudo vi test.conf
+```
+
+7. Tambahkan script seperti dibawah dan ganti sub domain yang sesuai contoh: ec2-54-167-233-28.compute-1.amazonaws.com.
+
+```bash
+server {
+    server_name  ec2-54-167-233-28.compute-1.amazonaws.com;
+
+    #access_log  /var/log/nginx/host.access.log  main;
+    # set client body size to 2M #
+    location / {
+        proxy_pass                              http://localhost:8081;
+        proxy_set_header Host                   $host;
+        proxy_set_header X-Real-IP              $remote_addr;
+        proxy_set_header X-Forwarded-For        $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto      $scheme;
+        proxy_set_header X-Forwarded-Host       $host;
+        proxy_set_header X-Forwarded-Port       $server_port;
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+}
+```
+
+kemudian simpan file test.conf
+
+8. pastikan file berjalan dengan baik dengan ketikkan perintah 
+
+```bash
+sudo nginx -t
+```
+
+9. kemudian reload nginx untuk melakukan update konfigurasi
+
+```bash
+sudo nginx -s reload
+```
+## GIT Clone Repository
+
+1. masuk ke folder /home/centos
+
+```bash
+cd /home/centos
+```
+
+2. Kemudian git clone file js sederhana untuk mencoba node js server
+
+```bash
+https://github.com/ekialvino/demo-technical-test.git
+```
+
+3. masuk ke folde demo-technical-test
+
+```bash
+cd demo-technical-test
+```
+
+4. kemudian jalankan file dengan menggunakan pm2
+
+```bash
+pm2 start index
+```
+
+5. setelah itu silahkan coba di browser dengan mengetikkan sub domain AWS atau IP Public EC2.
+
+6. jika setelah dicoba, gagal error nginx. silahkan ketikkan perintah
+
+```bash
+sudo setsebool -P httpd_can_network_connect 1
+```
+
+7. kemudian coba kembali dan aplikasi node js berhasil diakses yg bertuliskan 
+
+```bash
+Hello World from Node JS
+```
+
+## Konfigurasi SSL 
